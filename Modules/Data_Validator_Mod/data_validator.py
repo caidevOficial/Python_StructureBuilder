@@ -17,16 +17,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-def validate_answer(message: str) -> bool:
+def validate_answer(message: str, test_validate: str = None) -> bool:
     """[summary]\n
     Validate the answer of the user.
     
     Args:
         message (str): [The message to be shown to the user.]
+        test_validate (str, optional): [The test to be validated.]
     
     Returns:
         bool: [True if the answer is 'y', False otherwise.]
     """
     print(message)
-    answer = input('Answer: ')
+    if test_validate:
+        answer = test_validate
+        print(f'Answer: {answer}')
+    else:
+        answer = input('Answer: ')
     return answer.lower() == 'y'

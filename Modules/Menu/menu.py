@@ -23,33 +23,45 @@ def __print_options() -> None:
     """[summary]\n
     Print the options.
     """
-    print('Possible types of parameters:')
+    print('\nPossible types of parameters:')
     print("1. int\n2. float\n3. char\n4. long int\n5. short\n")
     
 
-def __select_menu_option() -> int:
+def __select_menu_option(selected: int = None) -> int:
     """[summary]\n
     Select the menu option.
+
+    Args:
+        selected (int, optional): [The selected option.]
     
     Returns:
         int: [The menu option.]
     """
     __print_options()
-    return int(input("Choose a number corresponding to the types listed above: "))
+    if selected:
+        print(f'\nChoose a number corresponding to the types listed above: {selected}')
+        return selected
+    return int(input("\nChoose a number corresponding to the types listed above: "))
 
-def menu_of_types() -> str:
+def menu_of_types(selected: int = None) -> str:
     """[summary]\n
-    Show the menu of types.
+    Select the type of parameter.
     
+    Args:
+        selected (int, optional): [The selected option.]
+
     Returns:
-        str: [The menu of types.]
+        str: [The type of parameter.]
     """
+    option_test = None
     confirm = False
     options = {1:'int', 2:'float', 3:'char', 4:'long int', 5:'short'}
-    option_selected = __select_menu_option()
     while not confirm:
+        option_selected = __select_menu_option(selected)
         while not option_selected in options:
-            print('Error, invalid option selected. Please, Try Again.')
+            print('Error, invalid option selected. Please, Try Again.\n')
             option_selected = __select_menu_option()
-        confirm = VA('Are you sure you want to use the type (y/n)?: ')
+        if selected:
+            option_test = 'y'
+        confirm = VA('Are you sure you want to use the type (y/n)?: ', option_test)
     return options[option_selected]
