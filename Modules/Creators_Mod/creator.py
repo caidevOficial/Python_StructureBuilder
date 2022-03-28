@@ -18,154 +18,167 @@
 #
 
 from abc import ABCMeta, abstractmethod
-from Modules.Entities_Mod.parameter import Parameter as PARAM
-from Modules.Entities_Mod.structure import Structure as STRUCT
-from Modules.Auxiliars.stringbuilder import StringBuilder as SB
+from Modules.Entities_Mod.parameter import Parameter
+from Modules.Entities_Mod.structure import Structure
+from Modules.Auxiliars.stringbuilder import StringBuilder
 
 class Creator(ABCMeta):
 
     def __init__(self) -> None:
         pass
     @abstractmethod
-    def create_imports(self, structure: STRUCT, s_builder: SB) -> None:
+    def create_imports(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the imports or 'Headers' of the file.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def create_builder_empty(self, structure: STRUCT, s_builder: SB) -> None:
+    def create_builder_empty(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the empty builder of the file.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
     
     @abstractmethod
-    def create_builder_with_params(self, structure: STRUCT, s_builder: SB) -> None:
+    def create_builder_with_params(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the builder with parameters of the file.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
     
     @abstractmethod
-    def add_parameter_into_builder(self, structure: STRUCT, s_builder: SB) -> None:
+    def add_parameter_into_builder(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
         Adds the parameters into the builder.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            parameter (Parameter): [Parameter to add into the builder]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def add_parameter_to_builder(self, structure: STRUCT, s_builder: SB) -> None:
+    def add_parameter_to_builder(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Adds parameters data to the 'parameters' of the builder.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def show_one_entity(self, structure: STRUCT, s_builder: SB) -> None:
+    def show_one_entity(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the function that shows one entity.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def show_all_entities(self, structure: STRUCT, s_builder: SB) -> None:
+    def show_all_entities(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the function that shows all entities.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def create_basic_struct_functions(self, structure: STRUCT, s_builder: SB) -> None:
+    def create_basic_struct_functions(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the functions that create the basic structure of the file.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def create_getter(self, structure: STRUCT, parameter: PARAM, s_builder: SB) -> None:
+    def create_getter(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the getter of the parameter.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            parameter (PARAM): [Parameter to get the data]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            parameter (Parameter): [Parameter to get the data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def create_setter(self, structure: STRUCT, parameter: PARAM, s_builder: SB) -> None:
+    def create_setter(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the setter of the parameter.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            parameter (PARAM): [Parameter to set the data]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            parameter (Parameter): [Parameter to set the data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
     
     @abstractmethod
-    def create_comparer(self, structure: STRUCT, parameter: PARAM, s_builder: SB) -> None:
+    def create_comparer(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the comparer of the file.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            parameter (PARAM): [Parameter to compare the data]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            parameter (Parameter): [Parameter to compare the data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def create_getter_and_setter(self, structure: STRUCT, parameter: PARAM, s_builder: SB) -> None:
+    def create_getter_and_setter(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the getter and setter of the parameter.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            parameter (PARAM): [Parameter to get and set the data]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            parameter (Parameter): [Parameter to get and set the data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def create_delete_function(self, structure: STRUCT, s_builder: SB) -> None:
+    def create_delete_function(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the delete function of the file.\n
         Args:
-            structure (struc): [Structure for check the parameters]
-            s_builder (sb): [StringBuilder to write the data of the file]
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         pass
 
     @abstractmethod
-    def file_maker(self, path: str, structure: STRUCT) -> None:
+    def create_file(self, path, s_builder: StringBuilder) -> bool:
+        """[summary]\n
+        Creates the file.\n
+        Args:
+            path (str): [Path to save the file]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        Returns:
+            bool: [True if the file was created, False if not or error]
+        """
+        pass
+
+    @abstractmethod
+    def file_maker(self, path: str, structure: Structure) -> None:
         """[summary]\n
         Creates the file.\n
         Args:
             path (str): [Path of the file]
-            structure (struc): [Structure for check the parameters]
+            structure (Structure): [Structure for check the parameters]
         """
         pass
