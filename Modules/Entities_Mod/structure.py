@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from parameter import Parameter as PARAM
+from Modules.Entities_Mod.parameter import Parameter
 
 class Structure:
     __structure_name: str = None
@@ -25,14 +25,14 @@ class Structure:
     __alias_short_name: str = None
     __parameters: list = None
 
-    def __init__(self, struct_name: str) -> None:
+    def __init__(self, struct_name: str = None) -> None:
         """[summary]\n
         Initialize the structure.
         
         Args:
             struct_name (str): [The name of the structure.]
         """
-        self.Parameters = [PARAM]
+        self.Parameters = [Parameter]
         self.Structure_Name = struct_name
 
     # ?####### Start Properties: Getters #######
@@ -57,7 +57,7 @@ class Structure:
         return self.__final_structure_name
     
     @property
-    def Alias_Short_Name(self) -> str:
+    def Alias(self) -> str:
         """[summary]\n
         Get the alias short name of the structure.
         
@@ -98,7 +98,7 @@ class Structure:
         Args:
             struct_name (str): [The name of the structure.]
         """
-        self.__structure_name = struct_name if struct_name else None
+        self.__structure_name = struct_name.capitalize() if struct_name else None
     
     @Final_Structure_Name.setter
     def Final_Structure_Name(self, final_struct_name: str) -> None:
@@ -110,8 +110,8 @@ class Structure:
         """
         self.__final_structure_name = f's{final_struct_name}' if final_struct_name else None
     
-    @Alias_Short_Name.setter
-    def Alias_Short_Name(self, alias_short_name: str) -> None:
+    @Alias.setter
+    def Alias(self, alias_short_name: str) -> None:
         """[summary]\n
         Set the alias short name of the structure.
         
@@ -134,7 +134,7 @@ class Structure:
 
     # ?####### Start Methods #######
 
-    def add_parameter(self, parameter: PARAM) -> None:
+    def add_parameter(self, parameter: Parameter) -> None:
         """[summary]\n
         Add a parameter to the structure.
         
@@ -142,6 +142,10 @@ class Structure:
             parameter (PARAM): [The parameter to add.]
         """
         self.__parameters.append(parameter)
+
+    def normalize_structure_data(self):
+        self.Alias = self.Structure_Name
+        self.Final_Structure_Name = self.Alias
 
     def __str__(self) -> str:
         """[summary]\n

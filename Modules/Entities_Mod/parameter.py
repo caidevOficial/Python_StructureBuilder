@@ -18,6 +18,7 @@
 #
 
 from Modules.Auxiliars.formatter import capitalize_words as CW
+from Modules.Auxiliars.stringbuilder import StringBuilder
 
 class Parameter:
     __id_parameter: int = None
@@ -72,7 +73,7 @@ class Parameter:
         return self.__name_parameter
     
     @property
-    def Alias_Parameter(self) -> str:
+    def Alias(self) -> str:
         """[summary]\n
         Get the alias of the parameter.
 
@@ -123,29 +124,55 @@ class Parameter:
         Args:
             name_parameter (str): [The name of the parameter.]
         """
-        self.__name_parameter = CW(name_parameter)
+        self.__name_parameter = name_parameter.strip().lower()
    
-    @Alias_Parameter.setter
-    def Alias_Parameter(self, alias_parameter: str) -> None:
+    @Alias.setter
+    def Alias(self, alias_parameter: str) -> None:
         """[summary]\n
         Set the alias of the parameter.
 
         Args:
             alias_parameter (str): [The alias of the parameter.]
         """
-        self.__alias_parameter = alias_parameter.capitalize()
+        alias = alias_parameter
+        self.__alias_parameter = alias.capitalize()
     
     # ?####### End Properties: Setters #######
 
     # ?####### Start Methods #######
 
-    def __str__(self) -> str:
-        return f""""
-        ID: {self.ID_Parameter}
-        Name: {self.Name_Parameter}
-        Alias: {self.Alias_Parameter}
-        Type: {self.Type_Parameter}
-        Length: {self.Length_Parameter}
+    def normalize_parameter(self, id_param: int, name_param: str, type_param: str, len_param: int) -> None:
+        """[summary]\n
+        Normalize the parameter.
+
+        Args:
+            id_param (int): [The id of the parameter.]
+            name_param (str): [The name of the parameter.]
+            type_param (str): [The type of the parameter.]
+            len_param (int): [The length of the parameter.]
         """
+        self.ID_Parameter = id_param
+        self.Type_Parameter = type_param
+        self.Length_Parameter = len_param
+        self.Name_Parameter = name_param
+        print(f'Name: {self.Name_Parameter}')
+        self.Alias = self.Name_Parameter
+        print(f'Alias: {self.Alias}')
+
+    def lite_info(self):
+        if self.Length_Parameter > 1:
+            return f"Preview: {self.Type_Parameter} {self.Name_Parameter}[{self.Length_Parameter}]"
+        else:
+            return f"Preview: {self.Type_Parameter} {self.Name_Parameter}"
+
+    def __str__(self) -> str:
+        sb = StringBuilder()
+        sb.AppendLine(f"ID: {self.ID_Parameter}")
+        sb.AppendLine(f"Type: {self.Type_Parameter}")
+        sb.AppendLine(f"Name: {self.Name_Parameter}")
+        sb.AppendLine(f"Alias: {self.Alias}")
+        if self.Length_Parameter > 1:
+            sb.AppendLine(f"Length: {self.Length_Parameter}")
+        return sb.__str__()
     
     # ?####### End Methods #######

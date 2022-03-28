@@ -25,21 +25,27 @@ class StringBuilder:
     def __init__(self):
         self._file_str = StringIO()
 
-    def Append(self, text: str):
+    def Append(self, text: str = None):
         """[summary]\n
         Append a text to the string builder in the same line.\n
         Args:
-            text (str): [Test to be appended]\n
+            text (str, optional): [Test to be appended]\n
         """
-        self._file_str.write(text)
+        if not text is None:
+            self._file_str.write(text)
+        else:
+            self._file_str.write('')
     
-    def AppendLine(self, text: str):
+    def AppendLine(self, text: str = None):
         """[summary]\n
         Append a text to the string builder in a new line.\n
         Args:
-            text (str): [Test to be appended]\n
+            text (str, optional): [Test to be appended]\n
         """
-        self.Append(f'{text}\n')
+        if not text is None:
+            self.Append(f'{text}\n')
+        else:
+            self.Append('\n')
     
     def Clear(self):
         """[summary]\n
@@ -68,3 +74,9 @@ class StringBuilder:
 
     def __str__(self):
         return self._file_str.getvalue()
+    
+    def __int__(self):
+        return int(self._file_str.getvalue())
+    
+    def __float__(self):
+        return float(self._file_str.getvalue())

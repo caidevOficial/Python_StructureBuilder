@@ -22,10 +22,11 @@ from Modules.Entities_Mod.parameter import Parameter
 from Modules.Entities_Mod.structure import Structure
 from Modules.Auxiliars.stringbuilder import StringBuilder
 
-class Creator(ABCMeta):
+class Creator(metaclass=ABCMeta):
 
     def __init__(self) -> None:
         pass
+
     @abstractmethod
     def create_imports(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n

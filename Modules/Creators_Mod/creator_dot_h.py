@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import os
 from Modules.Creators_Mod.creator import Creator
 from Modules.Auxiliars.stringbuilder import StringBuilder
 from Modules.Entities_Mod.parameter import Parameter
@@ -25,7 +26,7 @@ from Modules.Entities_Mod.structure import Structure
 
 class CreatorDotH(Creator):
     
-    _FILENAME: str = 'license.h'
+    _FILENAME: str = 'Modules/Creators_Mod/license.txt'
 
     def __init__(self):
         pass
@@ -38,8 +39,8 @@ class CreatorDotH(Creator):
         """
         with open(self._FILENAME, 'r') as license_file:
             for line in license_file:
-                s_builder.append_line(line)
-            s_builder.AppendLine()
+                s_builder.Append(line)
+            s_builder.AppendLine('\n')
     
     def create_imports(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -48,8 +49,8 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the parameters]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"#ifndef {structure.FinalStructureName.ToUpper()}_H_INCLUDED")
-        s_builder.AppendLine(f"#define {structure.FinalStructureName.ToUpper()}_H_INCLUDED")
+        s_builder.AppendLine(f"#ifndef {structure.Final_Structure_Name.upper()}_H_INCLUDED")
+        s_builder.AppendLine(f"#define {structure.Final_Structure_Name.upper()}_H_INCLUDED")
         s_builder.AppendLine("#include \"LinkedList.h\"")
     
     def add_parameter_into_builder(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
@@ -60,12 +61,12 @@ class CreatorDotH(Creator):
             parameter (Parameter): [Parameter to write into the file]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        if parameter.Length == 1:
-            s_builder.Append(f"{parameter.Type} {parameter.Name}")
+        if parameter.Type_Parameter == 'char':
+            s_builder.Append(f"{parameter.Type_Parameter}* {parameter.Name_Parameter}")
         else:
-            s_builder.Append(f"{parameter.TypeParameter}* {parameter.NameParameter}")
+            s_builder.Append(f"{parameter.Type_Parameter} {parameter.Name_Parameter}")
         
-        if structure.Parameters.IndexOf(parameter) != structure.Parameters.Count - 1:
+        if structure.Parameters.index(parameter) != len(structure.Parameters) - 1:
             s_builder.Append(", ")
         else:
             s_builder.AppendLine(");\n")
@@ -78,7 +79,10 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure to add the parameters]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        for parameter in structure.Parameters:
+        # for parameter in structure.Parameters:
+        #     self.add_parameter_into_builder(structure, parameter, s_builder)
+        for i in range(1, len(structure.Parameters)):
+            parameter = structure.Parameters[i]
             self.add_parameter_into_builder(structure, parameter, s_builder)
 
     def create_structure(self, structure: Structure, s_builder: StringBuilder) -> None:
@@ -90,13 +94,13 @@ class CreatorDotH(Creator):
         """
         self.create_imports(structure, s_builder)
         s_builder.AppendLine("\ntypedef struct{")
-        for parameter in structure.Parameters:
-            if parameter.Length == 1:
-                s_builder.AppendLine(f"\t{parameter.Type}* {parameter.Name};")
-                s_builder.AppendLine(f"\t{parameter.TypeParameter} {parameter.NameParameter};")
+        for i in range(1, len(structure.Parameters)):
+            parameter = structure.Parameters[i]
+            if parameter.Type_Parameter == 'char':
+                s_builder.AppendLine(f"\t{parameter.Type_Parameter} {parameter.Name_Parameter}[{parameter.Length_Parameter}];")
             else:
-                s_builder.AppendLine(f"\t{parameter.TypeParameter} {parameter.NameParameter}[{parameter.LengthParameter}];")
-        s_builder.AppendLine(f"}}{structure.FinalStructureName};\n")
+                s_builder.AppendLine(f"\t{parameter.Type_Parameter} {parameter.Name_Parameter};")
+        s_builder.AppendLine(f"}}{structure.Final_Structure_Name};\n")
     
     def create_builder_empty(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -105,7 +109,7 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the parameters]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"{structure.FinalStructureName}* {structure.AliasName}_newEmpty();")
+        s_builder.AppendLine(f"{structure.Final_Structure_Name}* {structure.Alias}_newEmpty();")
     
     def create_builder_with_params(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -114,7 +118,7 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the parameters]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.Append(f"{structure.FinalStructureName}* {structure.AliasName}_new(")
+        s_builder.Append(f"{structure.Final_Structure_Name}* {structure.Alias}_new(")
         self.add_parameter_to_builder(structure, s_builder)
     
     def show_one_entity(self, structure: Structure, s_builder: StringBuilder) -> None:
@@ -124,7 +128,7 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the data]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f'void {structure.AliasName}_show({structure.FinalStructureName}* this);')
+        s_builder.AppendLine(f'void {structure.Alias}_show({structure.Final_Structure_Name}* this);')
     
     def show_all_entities(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -133,7 +137,7 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the data]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f'int {structure.AliasName}_showAll(LinkedList* this, char* errorMesage);')
+        s_builder.AppendLine(f'int {structure.Alias}_showAll(LinkedList* this, char* errorMesage);')
     
     def create_basic_struct_functions(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -143,14 +147,14 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the data]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"// ## {structure.FinalStructureName}: CONSTRUCTORS.")
+        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: CONSTRUCTORS.")
         # ?# Empty builder
         self.create_builder_empty(structure, s_builder)
 
         # ?# Builder with params.
         self.create_builder_with_params(structure, s_builder)
 
-        s_builder.AppendLine(f"// ## {structure.FinalStructureName}: SHOW & SHOW_ALL.");
+        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: SHOW & SHOW_ALL.")
         # ?# Show one
         self.show_one_entity(structure, s_builder)
 
@@ -165,8 +169,8 @@ class CreatorDotH(Creator):
             parameter (Parameter): [Parameter to write into the file]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.Append(f"int {structure.AliasName}_get{parameter.AliasNameParameter}")
-        s_builder.AppendLine(f"({structure.FinalStructureName}* this, {parameter.TypeParameter}* {parameter.NameParameter});")
+        s_builder.Append(f"int {structure.Alias}_get{parameter.Alias}")
+        s_builder.AppendLine(f"({structure.Final_Structure_Name}* this, {parameter.Type_Parameter}* {parameter.Name_Parameter});")
     
     def create_setter(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -176,11 +180,11 @@ class CreatorDotH(Creator):
             parameter (Parameter): [Parameter to make its setter]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.Append(f"int {structure.AliasName}_set{parameter.AliasNameParameter}")
-        if parameter.Length == 1:
-            s_builder.AppendLine(f"({structure.FinalStructureName}* this, {parameter.TypeParameter} {parameter.NameParameter});")
+        s_builder.Append(f"int {structure.Alias}_set{parameter.Alias}")
+        if parameter.Type_Parameter == 'char':
+            s_builder.AppendLine(f"({structure.Final_Structure_Name}* this, {parameter.Type_Parameter}* {parameter.Name_Parameter});")
         else:
-            s_builder.AppendLine(f"({structure.FinalStructureName}* this, {parameter.TypeParameter}* {parameter.NameParameter});")
+            s_builder.AppendLine(f"({structure.Final_Structure_Name}* this, {parameter.Type_Parameter} {parameter.Name_Parameter});")
     
     def create_comparer(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -190,30 +194,32 @@ class CreatorDotH(Creator):
             parameter (Parameter): [Parameter to make its comparer]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"int {structure.AliasName}_compare{parameter.AliasNameParameter}(void* this1, void* this2);")
+        s_builder.AppendLine(f"int {structure.Alias}_compare{parameter.Alias}(void* this1, void* this2);")
     
-    def create_getter_and_setter(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
+    def create_getter_and_setter(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the getter and setter of the structure.\n
         Args:
             structure (Structure): [Structure for check the data]
-            parameter (Parameter): [Parameter to make its getter and setter]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"// ## {structure.FinalStructureName}: GETTERS");
+        s_builder.AppendLine(f"\n// ## {structure.Final_Structure_Name}: GETTERS");
 
-        for param in structure.ListParamaters:
-            self.create_getter(structure, param, s_builder)
+        for i in range(1, len(structure.Parameters)):
+            parameter = structure.Parameters[i]
+            self.create_getter(structure, parameter, s_builder)
         s_builder.AppendLine()
 
-        s_builder.AppendLine(f"// ## {structure.FinalStructureName}: SETTERS");
-        for param in structure.ListParamaters:
-            self.create_setter(structure, param, s_builder)
+        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: SETTERS");
+        for i in range(1, len(structure.Parameters)):
+            parameter = structure.Parameters[i]
+            self.create_setter(structure, parameter, s_builder)
         s_builder.AppendLine()
 
-        s_builder.AppendLine(f"// ## {structure.FinalStructureName}: COMPARERS");
-        for param in structure.ListParamaters:
-            self.create_comparer(structure, param, s_builder)
+        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: COMPARERS");
+        for i in range(1, len(structure.Parameters)):
+            parameter = structure.Parameters[i]
+            self.create_comparer(structure, parameter, s_builder)
         s_builder.AppendLine()
     
     def create_delete_function(self, structure: Structure, s_builder: StringBuilder) -> None:
@@ -223,10 +229,10 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the data]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"// ## {structure.FinalStructureName}: DELETE")
-        s_builder.AppendLine(f"void {structure.AliasName}_delete({structure.FinalStructureName}* this);")
+        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: DELETE")
+        s_builder.AppendLine(f"void {structure.Alias}_delete({structure.Final_Structure_Name}* this);")
 
-    def create_file(self, path, s_builder: StringBuilder) -> bool:
+    def create_file(self, path: str, s_builder: StringBuilder) -> bool:
         """[summary]\n
         Creates the file.h.\n
         Args:
@@ -238,12 +244,27 @@ class CreatorDotH(Creator):
         """
         try:
             with open(path, 'w') as file:
-                file.write(s_builder)
+                file.write(s_builder.__str__())
+                print(f"File {path.split('/')[-1]} was created.")
+                print(f'in Path: {path}')
                 return True
         except:
             return False
 
-    def file_maker(self, path: str, structure: Structure) -> None:
+    def create_dir(self, path):
+        """[summary]\n
+        Creates the directory.\n
+        Args:
+            path (str): [Path to the directory]
+        """
+        try:
+            if not os.path.exists(path):
+                os.makedirs(path)
+                print(f"Directory {path} was created.")
+        except Exception as e:
+            print(f'Error creating Path: {e}')
+
+    def file_maker(self, path: str, sub_path: str, structure: Structure) -> None:
         """[summary]\n
         Creates the file.h.\n
         Args:
@@ -251,8 +272,7 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the data]
         """
         s_builder = StringBuilder()
-        filename: str = f"{structure.FinalStructureName}.h"
-
+        filename: str = f"{structure.Final_Structure_Name}.h"
         try:
             self.create_license_header(s_builder)
             self.create_structure(structure, s_builder)
@@ -264,13 +284,15 @@ class CreatorDotH(Creator):
             self.create_getter_and_setter(structure, s_builder)
             self.create_delete_function(structure, s_builder)
 
-            s_builder.AppendLine(f"\n#endif /* {structure.FinalStructureName.ToUpper()}_H_INCLUDED */")
-        
-            if self.create_file(f'{path}/{filename}', s_builder):
+            s_builder.AppendLine(f"\n#endif /* {structure.Final_Structure_Name.upper()}_H_INCLUDED */")
+
+            self.create_dir(f'{path}/{sub_path}')
+
+            if self.create_file(f'{path}/{sub_path}/{filename}', s_builder):
                 print(f"{filename} was created.")
             else:
                 print(f"{filename} wasn't created.")
-        
+
         except Exception as e:
-            print(e)
+            print(e.args)
             print("Error in the creation of the file.")
