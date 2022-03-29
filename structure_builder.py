@@ -15,7 +15,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
 
 from Modules.Entities_Mod.structure import Structure
 from Modules.Auxiliars.data_collector import structure_name_col

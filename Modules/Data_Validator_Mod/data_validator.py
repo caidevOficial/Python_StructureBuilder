@@ -15,7 +15,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
 
 def validate_answer(message: str, test_validate: str = None) -> bool:
     """[summary]\n
