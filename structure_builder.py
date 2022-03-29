@@ -38,3 +38,5 @@ myStructure = parameters_collector(myStructure)
 
 # ?## Creating files
 builder_dot_h.file_maker(desktop, sub_path , myStructure)
+# TODO: Implement the builder_dot_c class
+# builder_dot_c.file_maker(desktop, sub_path , myStructure)

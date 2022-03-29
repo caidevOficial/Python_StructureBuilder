@@ -29,3 +29,27 @@ def capitalize_words(text: str) -> str:
     """
     text = text.strip()
     return " ".join(word.capitalize() for word in text.split(' '))
+
+def message_decor(func) -> None:
+    """[summary]\n
+    Decorator to show a message before and after the function.
+    
+    Args:
+        func (function): [The function to be decorated.]
+    """
+    def wrapper(*args, **kwargs):
+        symbols = ''.join(['#' for _ in range(len(*args))])
+        print(symbols)
+        func(*args)
+        print(f'{symbols}\n')
+    return wrapper
+
+@message_decor
+def print_message(message: str) -> None:
+    """[summary]\n
+    Prints a message.
+    
+    Args:
+        message (str): [The message to be printed.]
+    """
+    print(message)
