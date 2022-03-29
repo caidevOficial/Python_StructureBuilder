@@ -15,8 +15,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+
+
 from Modules.Auxiliars.formatter import print_message as Print
+
 
 def validate_answer(message: str, test_validate: str = None) -> bool:
     """[summary]\n

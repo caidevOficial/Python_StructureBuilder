@@ -16,7 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 from Modules.Data_Validator_Mod.data_validator import validate_answer as VA
+
 
 def __print_options() -> None:
     """[summary]\n

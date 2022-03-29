@@ -16,7 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 from Modules.Entities_Mod.parameter import Parameter
+
 
 class Structure:
     __structure_name: str = None
