@@ -37,6 +37,17 @@ class Creator(metaclass=ABCMeta):
         """
         pass
 
+    def create_license_header(self, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Writes in the file a license MIT-type.\n
+        Args:
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
+        with open(self._FILENAME, 'r') as license_file:
+            for line in license_file:
+                s_builder.Append(line)
+            s_builder.AppendLine('\n')
+    
     @abstractmethod
     def create_builder_empty(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
