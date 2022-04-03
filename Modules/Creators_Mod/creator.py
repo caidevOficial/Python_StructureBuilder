@@ -17,11 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from abc import ABCMeta, abstractmethod
 import os
+from abc import ABCMeta, abstractmethod
+
+from Modules.Auxiliars.stringbuilder import StringBuilder
 from Modules.Entities_Mod.parameter import Parameter
 from Modules.Entities_Mod.structure import Structure
-from Modules.Auxiliars.stringbuilder import StringBuilder
+
 
 class Creator(metaclass=ABCMeta):
 

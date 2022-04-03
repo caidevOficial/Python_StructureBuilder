@@ -17,7 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from Modules.Auxiliars.formatter import capitalize_words as CW
 from Modules.Auxiliars.stringbuilder import StringBuilder
 
 

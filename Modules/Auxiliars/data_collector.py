@@ -18,12 +18,14 @@
 
 
 import os
+
+from Modules.Auxiliars.formatter import print_message
 from Modules.Auxiliars.stringbuilder import StringBuilder
 from Modules.Data_Validator_Mod.data_validator import validate_answer
 from Modules.Entities_Mod.parameter import Parameter
 from Modules.Entities_Mod.structure import Structure
 from Modules.Menu.menu import menu_of_types
-from Modules.Auxiliars.formatter import print_message
+
 
 def structure_name_col()-> str:
     """

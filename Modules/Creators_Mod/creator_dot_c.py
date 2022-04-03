@@ -16,10 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from Modules.Creators_Mod.creator import Creator
 from Modules.Auxiliars.stringbuilder import StringBuilder
+from Modules.Creators_Mod.creator import Creator
 from Modules.Entities_Mod.parameter import Parameter
 from Modules.Entities_Mod.structure import Structure
+
 
 class CreatorDotC(Creator):
     
