@@ -23,6 +23,7 @@ from Modules.Data_Validator_Mod.data_validator import validate_answer
 from Modules.Entities_Mod.parameter import Parameter
 from Modules.Entities_Mod.structure import Structure
 from Modules.Menu.menu import menu_of_types
+from Modules.Auxiliars.formatter import print_message
 
 def structure_name_col()-> str:
     """
@@ -41,35 +42,36 @@ def structure_name_col()-> str:
         validated =  validate_answer('Are you sure? [y/n]: ')
     return sb.__str__()
 
-def param_name_col(structure_name: str) -> str:
+def param_name_col(structure_name: str, order: int) -> str:
     """
     Gets the name of the parameter.
     """
     sb = StringBuilder()
     validated = False
     while not validated:
-        print(f"Write the name of the parameter for {structure_name}: ")
+        print_message(f"Write the name of the {order}° parameter for {structure_name}: ")
+        # print(f"Write the name of the parameter for {structure_name}: ")
         sb.Append(input().strip())
         validated =  validate_answer('Are you sure? [y/n]: ')
     return sb.__str__()
 
-def param_type_col(structure_name: str) -> str:
+def param_type_col(order: int, param_name: str) -> str:
     """
     Gets the type of the parameter.
     """
     sb = StringBuilder()
-    print(f"Write the type of the parameter for {structure_name}: ")
+    print_message(f"Write the type of the {order}° parameter [{param_name}]: ")
     sb.Append(menu_of_types())
     return sb.__str__()
 
-def param_len_col(param_name: str) -> int:
+def param_len_col(param_name: str, order: int) -> int:
     """
     Gets the length of the parameter.
     """
     sb = StringBuilder()
     validated = False
     while not validated:
-        print(f"Write the length for {param_name}: ")
+        print_message(f"Write the length for the {order}° parameter [{param_name}]: ")
         sb.Append(input().strip())
         validated =  validate_answer('Are you sure? [y/n]: ')
     return int(sb)
@@ -81,7 +83,7 @@ def param_amount_col(structure_name: str) -> int:
     sb = StringBuilder()
     validated = False
     while not validated:
-        print(f"Write the amount of parameters for {structure_name}: ")
+        print_message(f"Write the amount of parameters for {structure_name}: ")
         sb.Append(input().strip())
         validated =  validate_answer('Are you sure? [y/n]: ')
     return sb.__int__()
@@ -95,12 +97,11 @@ def parameters_collector(structure: Structure) -> Structure:
     amount_param = param_amount_col(structure.Structure_Name)
     for i in range(amount_param):
         param = Parameter()
-        param_name = param_name_col(structure.Structure_Name)
-        param_type = param_type_col(structure.Structure_Name)
-        param_len = param_len_col(param_name) if param_type == 'char' else 1
+        print_message(f"\nParameter {i+1} of {amount_param}")
+        param_name = param_name_col(structure.Structure_Name, i+1)
+        param_type = param_type_col(param_name, i+1)
+        param_len = param_len_col(param_name, i+1) if param_type == 'char' else 1
         param.normalize_parameter(i+1, param_name, param_type, param_len)
-        print(param.__str__())
-        print(param.lite_info())
         structure.add_parameter(param)
     return structure
 

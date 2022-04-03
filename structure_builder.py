@@ -17,27 +17,32 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+from Modules.Creators_Mod.creator_dot_c import CreatorDotC
 from Modules.Entities_Mod.structure import Structure
 from Modules.Auxiliars.data_collector import structure_name_col
 from Modules.Auxiliars.data_collector import parameters_collector
 from Modules.Auxiliars.data_collector import desktop_path
 from Modules.Creators_Mod.creator_dot_h import CreatorDotH
+from Modules.Auxiliars.formatter import print_message
 
 
 # ?## Entites
 myStructure = Structure()
 builder_dot_h = CreatorDotH()
+builder_dot_c = CreatorDotC()
 desktop = desktop_path()
 
-# ?## Variables
+# ?## Variables for the directory to save the files
 sub_path = 'Files'
 
-# ?## Creating structure
-myStructure.Structure_Name = structure_name_col()
-myStructure.normalize_structure_data()
-myStructure = parameters_collector(myStructure)
+try:
+    # ?## Creating structure
+    myStructure.Structure_Name = structure_name_col()
+    myStructure.normalize_structure_data()
+    myStructure = parameters_collector(myStructure)
 
-# ?## Creating files
-builder_dot_h.file_maker(desktop, sub_path , myStructure)
-# TODO: Implement the builder_dot_c class
-# builder_dot_c.file_maker(desktop, sub_path , myStructure)
+    # ?## Creating files
+    builder_dot_h.file_maker(desktop, sub_path , myStructure)
+    builder_dot_c.file_maker(desktop, sub_path , myStructure)
+except Exception as e:
+    print_message(f'Exeption found:\nDetails ----> {e}')

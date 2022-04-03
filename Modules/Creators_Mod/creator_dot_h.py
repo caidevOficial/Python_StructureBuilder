@@ -25,14 +25,12 @@ from Modules.Entities_Mod.structure import Structure
 
 
 class CreatorDotH(Creator):
-    
-    _FILENAME: str = 'Modules/Creators_Mod/license.txt'
 
     def __init__(self):
         pass
     
-    def create_license_header(self, s_builder: StringBuilder) -> None:
-        super().create_license_header(s_builder)
+    def read_text_file(self, s_builder: StringBuilder, path: str) -> None:
+        super().read_text_file(s_builder, path)
     
     def create_imports(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -71,8 +69,6 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure to add the parameters]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        # for parameter in structure.Parameters:
-        #     self.add_parameter_into_builder(structure, parameter, s_builder)
         for i in range(1, len(structure.Parameters)):
             parameter = structure.Parameters[i]
             self.add_parameter_into_builder(structure, parameter, s_builder)
@@ -110,7 +106,7 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the parameters]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.Append(f"{structure.Final_Structure_Name}* {structure.Alias}_new(")
+        s_builder.Append(f"{structure.Final_Structure_Name}* {structure.Alias}_newParam(")
         self.add_parameter_to_builder(structure, s_builder)
     
     def show_one_entity(self, structure: Structure, s_builder: StringBuilder) -> None:
@@ -139,19 +135,7 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the data]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: CONSTRUCTORS.")
-        # ?# Empty builder
-        self.create_builder_empty(structure, s_builder)
-
-        # ?# Builder with params.
-        self.create_builder_with_params(structure, s_builder)
-
-        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: SHOW & SHOW_ALL.")
-        # ?# Show one
-        self.show_one_entity(structure, s_builder)
-
-        # ?# Show All
-        self.show_all_entities(structure, s_builder)
+        super().create_basic_struct_functions(structure, s_builder)
     
     def create_getter(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -195,26 +179,26 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the data]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"\n// ## {structure.Final_Structure_Name}: GETTERS");
+        s_builder.AppendLine(f"\n// ## {structure.Final_Structure_Name}: GETTERS")
 
         for i in range(1, len(structure.Parameters)):
             parameter = structure.Parameters[i]
             self.create_getter(structure, parameter, s_builder)
         s_builder.AppendLine()
 
-        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: SETTERS");
+        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: SETTERS")
         for i in range(1, len(structure.Parameters)):
             parameter = structure.Parameters[i]
             self.create_setter(structure, parameter, s_builder)
         s_builder.AppendLine()
 
-        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: COMPARERS");
+        s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: COMPARERS")
         for i in range(1, len(structure.Parameters)):
             parameter = structure.Parameters[i]
             self.create_comparer(structure, parameter, s_builder)
         s_builder.AppendLine()
     
-    def create_delete_function(self, structure: Structure, s_builder: StringBuilder) -> None:
+    def create_destructor_function(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the delete function of the structure.\n
         Args:
@@ -223,38 +207,6 @@ class CreatorDotH(Creator):
         """
         s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: DELETE")
         s_builder.AppendLine(f"void {structure.Alias}_delete({structure.Final_Structure_Name}* this);")
-
-    def create_file(self, path: str, s_builder: StringBuilder) -> bool:
-        """[summary]\n
-        Creates the file.h.\n
-        Args:
-            path (str): [Path to the file]
-            s_builder (StringBuilder): [StringBuilder to write the data of the file]
-            
-        Returns:
-            bool: [True if the file was created, False if not]
-        """
-        try:
-            with open(path, 'w') as file:
-                file.write(s_builder.__str__())
-                print(f"File {path.split('/')[-1]} was created.")
-                print(f'in Path: {path}')
-                return True
-        except:
-            return False
-
-    def create_dir(self, path):
-        """[summary]\n
-        Creates the directory.\n
-        Args:
-            path (str): [Path to the directory]
-        """
-        try:
-            if not os.path.exists(path):
-                os.makedirs(path)
-                print(f"Directory {path} was created.")
-        except Exception as e:
-            print(f'Error creating Path: {e}')
 
     def file_maker(self, path: str, sub_path: str, structure: Structure) -> None:
         """[summary]\n
@@ -266,15 +218,16 @@ class CreatorDotH(Creator):
         s_builder = StringBuilder()
         filename: str = f"{structure.Final_Structure_Name}.h"
         try:
-            self.create_license_header(s_builder)
+            self.read_text_file(s_builder, self.License)
             self.create_structure(structure, s_builder)
-            s_builder.AppendLine("// # CREDITS TO:")
-            s_builder.AppendLine("// ## Advanced Improvement And develop in Python: FacuFalcone - CaidevOficial.")
-            s_builder.AppendLine("// ## Follow me on -> github.com/CaidevOficial\n")
+            self.read_text_file(s_builder, self.Credits)
+            # s_builder.AppendLine("// # CREDITS TO:")
+            # s_builder.AppendLine("// ## Advanced Improvement And develop in Python: FacuFalcone - CaidevOficial.")
+            # s_builder.AppendLine("// ## Follow me on -> github.com/CaidevOficial\n")
 
             self.create_basic_struct_functions(structure, s_builder)
             self.create_getter_and_setter(structure, s_builder)
-            self.create_delete_function(structure, s_builder)
+            self.create_destructor_function(structure, s_builder)
 
             s_builder.AppendLine(f"\n#endif /* {structure.Final_Structure_Name.upper()}_H_INCLUDED */")
 

@@ -162,9 +162,9 @@ class Parameter:
 
     def lite_info(self):
         if self.Length_Parameter > 1:
-            return f"Preview: {self.Type_Parameter} {self.Name_Parameter}[{self.Length_Parameter}]"
+            return f"Preview: {self.Type_Parameter} {self.Name_Parameter}[{self.Length_Parameter}];"
         else:
-            return f"Preview: {self.Type_Parameter} {self.Name_Parameter}"
+            return f"Preview: {self.Type_Parameter} {self.Name_Parameter};"
 
     def __str__(self) -> str:
         sb = StringBuilder()

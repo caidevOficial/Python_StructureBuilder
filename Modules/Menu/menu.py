@@ -64,5 +64,5 @@ def menu_of_types(selected: int = None) -> str:
             option_selected = __select_menu_option()
         if selected:
             option_test = 'y'
-        confirm = VA('Are you sure you want to use the type (y/n)?: ', option_test)
+        confirm = VA(f'Are you sure you want to use the type "{options[option_selected]}" (y/n)?: ', option_test)
     return options[option_selected]
