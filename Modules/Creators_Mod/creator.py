@@ -35,10 +35,20 @@ class Creator(metaclass=ABCMeta):
     
     @property
     def License(self) -> str:
+        """[summary]\n
+        Gets the License path.\n
+        Returns:
+            str: [The path where the License is]
+        """
         return self._LICENSE
     
     @property
     def Credits(self) -> str:
+        """[summary]\n
+        Gets the Credits path.\n
+        Returns:
+            str: [The path where the Credits is]
+        """
         return self._CREDITS
 
     def read_text_file(self, s_builder: StringBuilder, path: str) -> None:

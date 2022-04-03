@@ -155,10 +155,8 @@ class Parameter:
         self.Type_Parameter = type_param
         self.Length_Parameter = len_param
         self.Name_Parameter = name_param
-        print(f'Name: {self.Name_Parameter}')
         self.Alias = self.Name_Parameter
-        print(f'Alias: {self.Alias}')
-
+        
     def lite_info(self):
         if self.Length_Parameter > 1:
             return f"Preview: {self.Type_Parameter} {self.Name_Parameter}[{self.Length_Parameter}];"

@@ -52,7 +52,6 @@ def param_name_col(structure_name: str, order: int) -> str:
     validated = False
     while not validated:
         print_message(f"Write the name of the {order}° parameter for {structure_name}: ")
-        # print(f"Write the name of the parameter for {structure_name}: ")
         sb.Append(input().strip())
         validated =  validate_answer('Are you sure? [y/n]: ')
     return sb.__str__()
@@ -104,6 +103,7 @@ def parameters_collector(structure: Structure) -> Structure:
         param_type = param_type_col(param_name, i+1)
         param_len = param_len_col(param_name, i+1) if param_type == 'char' else 1
         param.normalize_parameter(i+1, param_name, param_type, param_len)
+        print_message(param.lite_info())
         structure.add_parameter(param)
     return structure
 
