@@ -33,7 +33,7 @@ builder_dot_c = CreatorDotC()
 desktop = desktop_path()
 
 # ?## Variables for the directory to save the files
-sub_path = 'Files'
+sub_path = 'Py_StructureBuilder_Files'
 
 try:
     # ?## Creating structure
