@@ -58,7 +58,7 @@
 <br><br><br>
 
 # Structure Builder
-This program allows you to create basic files necessary for structures in the 'C' language. By writing the names of the structure and parameters, as well as their types and length (in the case of a parameter of type 'char'), it will create a file with extension '.h' for the libraries and a file with extension ' .c' with the code in question in a folder in Desktop.
+This program allows you to create basic files necessary for structures in the 'C' language [for dynamic memory]. By writing the names of the structure and parameters, as well as their types and length (in the case of a parameter of type 'char'), it will create a file with extension '.h' for the libraries and a file with extension ' .c' with the code in question in a folder in Desktop.
 ---
 
 <br><br><br>
