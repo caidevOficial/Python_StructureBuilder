@@ -23,6 +23,8 @@ class StringBuilder:
     _file_str: str = None
     _counter: int = None
 
+    # ?### Magic Functions: Start ###
+
     def __init__(self):
         self._file_str = StringIO()
     
@@ -54,6 +56,8 @@ class StringBuilder:
             return self.String_Value.split('\n')[self.Counter - 1]
         else:
             raise StopIteration
+
+    # ?### Magic Functions: End ###
 
     @property
     def Counter(self) -> int:
