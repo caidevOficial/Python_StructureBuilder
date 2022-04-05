@@ -219,18 +219,12 @@ class CreatorDotH(Creator):
             self.read_text_file(s_builder, self.License)
             self.create_structure(structure, s_builder)
             self.read_text_file(s_builder, self.Credits)
-            # s_builder.AppendLine("// # CREDITS TO:")
-            # s_builder.AppendLine("// ## Advanced Improvement And develop in Python: FacuFalcone - CaidevOficial.")
-            # s_builder.AppendLine("// ## Follow me on -> github.com/CaidevOficial\n")
-
             self.create_basic_struct_functions(structure, s_builder)
             self.create_getter_and_setter(structure, s_builder)
             self.create_destructor_function(structure, s_builder)
-
             s_builder.AppendLine(f"\n#endif /* {structure.Final_Structure_Name.upper()}_H_INCLUDED */")
 
             self.create_dir(f'{path}/{sub_path}')
-
             if self.create_file(f'{path}/{sub_path}/{filename}', s_builder):
                 print(f"{filename} was created.")
             else:
@@ -239,3 +233,4 @@ class CreatorDotH(Creator):
         except Exception as e:
             print(e.args)
             print("Error in the creation of the file.")
+            raise e
