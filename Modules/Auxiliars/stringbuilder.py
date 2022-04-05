@@ -20,10 +20,85 @@
 from io import StringIO
 
 class StringBuilder:
-    _file_str = None
+    _file_str: str = None
+    _counter: int = None
 
     def __init__(self):
         self._file_str = StringIO()
+    
+    def __del__(self):
+        """[summary]\n
+        Delete the string builder.\n
+        """
+        self._file_str.close()
+    
+    def __len__(self):
+        return len(self.String_Value)
+    
+    def __str__(self):
+        return self._file_str.getvalue()
+    
+    def __int__(self):
+        return int(self._file_str.getvalue())
+    
+    def __float__(self):
+        return float(self._file_str.getvalue())
+    
+    def __iter__(self):
+        self.Counter = 0
+        return self
+    
+    def __next__(self):
+        if self.Counter < self.Length_List:
+            self.Counter += 1
+            return self.String_Value.split('\n')[self.Counter - 1]
+        else:
+            raise StopIteration
+
+    @property
+    def Counter(self) -> int:
+        """[summary]\n
+        Get the counter of the string builder.\n
+        Returns:
+            [int]: [Counter of the string builder]\n
+        """
+        return self._counter
+    
+    @property
+    def String_Value(self) -> str:
+        """[summary]\n
+        Get the string value of the string builder.\n
+        Returns:
+            [str]: [String value of the string builder]\n
+        """
+        return self._file_str.getvalue()
+    
+    @property
+    def Length(self) -> int:
+        """[summary]\n
+        Get the length of the string builder.\n
+        Returns:
+            [int]: [Length of the string builder]\n
+        """
+        return self.__len__()
+
+    @property
+    def Length_List(self) -> list:
+        """[summary]\n
+        Get the amount of lines of the StringBuilder.\n
+        Returns:
+            [list]: [Amount of lines of the StringBuilder in a list]\n
+        """
+        return len(self.String_Value.split('\n'))
+    
+    @Counter.setter
+    def Counter(self, value: int):
+        """[summary]\n
+        Set the counter of the string builder.\n
+        Args:
+            value (int): [Counter to be set]\n
+        """
+        self._counter = value
 
     def Append(self, text: str = None):
         """[summary]\n
@@ -53,30 +128,3 @@ class StringBuilder:
         """
         self._file_str.close()
         self._file_str = StringIO()
-    
-    def __del__(self):
-        """[summary]\n
-        Delete the string builder.\n
-        """
-        self._file_str.close()
-    
-    def __exit__(self, exc_type, exc_value, traceback):
-        self._file_str.close()
-        self._file_str = None
-        return False
-    
-    def __repr__(self):
-        return self._file_str.getvalue()
-    
-    def __len__(self):
-        return len(self._file_str.getvalue())
-    
-
-    def __str__(self):
-        return self._file_str.getvalue()
-    
-    def __int__(self):
-        return int(self._file_str.getvalue())
-    
-    def __float__(self):
-        return float(self._file_str.getvalue())
