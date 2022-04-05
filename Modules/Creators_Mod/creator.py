@@ -19,6 +19,7 @@
 
 import os
 from abc import ABCMeta, abstractmethod
+from Modules.Auxiliars.formatter import print_message
 
 from Modules.Auxiliars.stringbuilder import StringBuilder
 from Modules.Entities_Mod.parameter import Parameter
@@ -244,14 +245,17 @@ class Creator(metaclass=ABCMeta):
         """
         try:
             with open(path, 'w') as file:
-                file.write(s_builder.__str__())
+                for line in s_builder:
+                    print(line, file=file)
                 print(f"File {path.split('/')[-1]} was created.")
                 print(f'in Path: {path}')
+                s_builder.Clear()
                 return True
-        except:
-            return False
+        except Exception as e:
+            print_message(e.args)
+            raise e
 
-    def create_dir(self, path):
+    def create_dir(self, path: str):
         """[summary]\n
         Creates the directory.\n
         Args:
@@ -263,6 +267,7 @@ class Creator(metaclass=ABCMeta):
                 print(f"Directory {path} was created.")
         except Exception as e:
             print(f'Error creating Path: {e}')
+            raise e
 
     @abstractmethod
     def file_maker(self, path: str, sub_path: str, structure: Structure) -> None:

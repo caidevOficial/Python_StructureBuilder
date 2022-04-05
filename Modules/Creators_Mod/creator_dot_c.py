@@ -333,11 +333,12 @@ class CreatorDotC(Creator):
                 self.create_destructor_function(structure, s_builder)
 
                 self.create_dir(f'{path}/{sub_path}')
-
                 if self.create_file(f'{path}/{sub_path}/{filename}', s_builder):
                     print(f"{filename} was created.")
                 else:
                     print(f"{filename} wasn't created.")
+
             except Exception as e:
                 print(e.args)
                 print("Error in the creation of the file.")
+                raise e
