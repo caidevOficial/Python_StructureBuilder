@@ -31,6 +31,15 @@ class CreatorDotC(Creator):
         super().read_text_file(s_builder, path)
     
     def __check_char_param(self, structure: Structure) -> bool:
+        """[summary]\n
+        Checks if the structure has a char parameter.\n
+
+        Args:
+            structure (Structure): [Structure to retrieve the data]
+        
+        Returns:
+            bool: [True if the structure has a char parameter, False otherwise]
+        """
         if not structure is None:
             for i in range(1, len(structure.Parameters)):
                 if structure.Parameters[i].Type_Parameter == 'char':
@@ -81,7 +90,6 @@ class CreatorDotC(Creator):
             parameter = structure.Parameters[i]
             self.add_parameter_into_builder(structure, parameter, s_builder)
 
-    # !### Verify this!
     def create_builder_with_params(self, structure: Structure, s_builder: StringBuilder) -> None:
         s_builder.Append(f'{structure.Final_Structure_Name}* {structure.Alias}_new(')
         self.add_parameter_to_builder(structure, s_builder)
@@ -160,6 +168,14 @@ class CreatorDotC(Creator):
         super().create_basic_struct_functions(structure, s_builder)
 
     def __create_comparer_with_char(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates a comparer taking into account the type char.\n
+
+        Args:
+            structure (Structure): [Structure to retrieve the data]
+            parameter (Parameter): [Parameter to retrieve its data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         s_builder.AppendLine(f"// For use in a sort function - Compare {structure.Structure_Name}->{parameter.Name_Parameter}")
         s_builder.AppendLine(f"int {structure.Alias}_compare{parameter.Alias}(void* this1, void* this2){{")
         s_builder.AppendLine("\tint anw;")
@@ -175,6 +191,14 @@ class CreatorDotC(Creator):
         s_builder.AppendLine("\treturn anw;\n}\n")
 
     def __create_comparer_without_char(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates a comparer without taking into account the char type.
+
+        Args:
+            structure (Structure): [Structure to retrieve the data]
+            parameter (Parameter): [Parameter to retrieve its data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         s_builder.AppendLine(f"// For use in a sort function - Compare {structure.Structure_Name}->{parameter.Name_Parameter}")
         s_builder.AppendLine(f"int {structure.Alias}_compare{parameter.Alias}(void* this1, void* this2){{")
         s_builder.AppendLine("\tint anw = 0;")
@@ -193,12 +217,27 @@ class CreatorDotC(Creator):
         s_builder.AppendLine("\treturn anw;\n}\n")
 
     def create_comparer(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates a comparer function for one parameter of the structure.
+
+        Args:
+            structure (Structure): [Structure to retrieve the data]
+            parameter (Parameter): [Parameter to retrieve its data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         if parameter.Type_Parameter == 'char':
             self.__create_comparer_with_char(structure, parameter, s_builder)
         elif parameter.Length_Parameter == 1:
             self.__create_comparer_without_char(structure, parameter, s_builder)
     
     def __create_comparers(self, structure: Structure, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates a comparer for each parameter of the structure.
+
+        Args:
+            structure (Structure): [Structure to retrieve the data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         for i in range(1, len(structure.Parameters)):
             self.create_comparer(structure, structure.Parameters[i], s_builder)
     
@@ -240,12 +279,27 @@ class CreatorDotC(Creator):
         s_builder.AppendLine('\treturn isError;\n}\n')
 
     def create_getter(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        It creates a getter function for a structure parameter
+        
+        Args:
+            structure (Structure): [Structure to retrieve the data]
+            parameter (Parameter): [Parameter to retrieve its data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         if parameter.Type_Parameter == 'char':
             self.__create_getters_char_function(structure, parameter, s_builder)
         elif parameter.Length_Parameter == 1:
             self.__create_getters_without_char_function(structure, parameter, s_builder)
     
     def __create_getters(self, structure: Structure, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates the getters for a structure
+
+        Args:
+            structure (Structure): [Structure to retrieve the data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         for i in range(1, len(structure.Parameters)):
             self.create_getter(structure, structure.Parameters[i], s_builder)
     
@@ -286,6 +340,14 @@ class CreatorDotC(Creator):
         s_builder.AppendLine('\treturn isError;\n}\n')
     
     def create_setter(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates a setter for a structure
+
+        Args:
+            structure (Structure): [Structure to retrieve the data]
+            parameter (Parameter): [Parameter to retrieve its data]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         if parameter.Type_Parameter == 'char':
             self.__create_setters_char_function(structure, parameter, s_builder)
         elif parameter.Length_Parameter == 1:
@@ -303,6 +365,13 @@ class CreatorDotC(Creator):
             self.create_setter(structure, structure.Parameters[i], s_builder)
     
     def create_getter_and_setter(self, structure: Structure, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates the getters and setters for a structure
+
+        Args:
+            structure (Structure): [Structure to retrieve the data of the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         if structure:
             s_builder.AppendLine(f'// ## {structure.Final_Structure_Name}: GETTERS')
             self.__create_getters(structure, s_builder)
@@ -312,6 +381,13 @@ class CreatorDotC(Creator):
             self.__create_comparers(structure, s_builder)
     
     def create_destructor_function(self, structure: Structure, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates the destructor function for a structure
+
+        Args:
+            structure (Structure): [Structure to retrieve the data of the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
         s_builder.AppendLine(f'// ## {structure.Final_Structure_Name}: DESTRUCTOR')
         s_builder.Append(f'void {structure.Alias}_delete')
         s_builder.AppendLine(f'({structure.Final_Structure_Name}* this){{')
@@ -320,6 +396,16 @@ class CreatorDotC(Creator):
         s_builder.AppendLine('}')
 
     def file_maker(self, path: str, sub_path: str, structure: Structure) -> None:
+        """[summary]\n
+
+        Args:
+            path (str): [Path to save the file created.]
+            sub_path (str): [Sub directory to save inside the file created.]
+            structure (Structure): [Structure to retrieve the data of the parameters]
+
+        Raises:
+            Exception: [Raises an exception if an error occurs]
+        """
         if structure:
             s_builder = StringBuilder()
             filename: str = f"{structure.Final_Structure_Name}.c"

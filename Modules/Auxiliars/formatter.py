@@ -37,7 +37,7 @@ def message_decor(func) -> None:
     Args:
         func (function): [The function to be decorated.]
     """
-    def wrapper(*args, **kwargs):
+    def wrapper(*args):
         symbols = ''.join(['#' for _ in range(len(*args))])
         print(symbols)
         func(*args)
