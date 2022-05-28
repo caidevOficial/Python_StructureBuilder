@@ -173,7 +173,7 @@ You can also try others versions of this software coded in other languages, such
         <img class="circular" alt="Facu" src="https://avatars1.githubusercontent.com/u/12877139?s=400&u=d369ee24466653d9bbeeb9654930e3ff1c67b76a&v=4" width="80px" height="80px" />
       </td>
     </tr>
-    <th><center>🤴 Facu Falcone - Junior Developer</center></th>
+    <th><center>🤴 Facu Falcone - Data Engineer</center></th>
     </theader>
     <tbody>
     <tr align='center'>
