@@ -77,6 +77,16 @@ class StringBuilder:
         """
         return self._file_str.getvalue()
     
+    @String_Value.setter
+    def String_Value(self, text: str):
+        """[summary]\n
+        Set the string value of the string builder.\n
+        Args:
+            text (str): [Text to be set]\n
+        """
+        self.Clear()
+        self.Append(text)
+
     @property
     def Length(self) -> int:
         """[summary]\n
