@@ -30,6 +30,15 @@ def capitalize_words(text: str) -> str:
     text = text.strip()
     return " ".join(word.capitalize() for word in text.split(' '))
 
+def get_longest_message(*args) -> int:
+    """[summary]\n
+    Get the longest message.
+    
+    Returns:
+        int: [The longest message.]
+    """
+    return max(len(arg) for arg in args)
+
 def message_decor(func) -> None:
     """[summary]\n
     Decorator to show a message before and after the function.
@@ -38,18 +47,19 @@ def message_decor(func) -> None:
         func (function): [The function to be decorated.]
     """
     def wrapper(*args):
-        symbols = ''.join(['#' for _ in range(len(*args))])
+        symbols = ''.join(['#' for _ in range(get_longest_message(*args))])
         print(symbols)
         func(*args)
         print(f'{symbols}\n')
     return wrapper
 
 @message_decor
-def print_message(message: str) -> None:
+def print_message(*args) -> None:
     """[summary]\n
     Prints a message.
     
     Args:
-        message (str): [The message to be printed.]
+        args (str): [The messages to be printed.]
     """
-    print(message)
+    for arg in args:
+        print(arg)

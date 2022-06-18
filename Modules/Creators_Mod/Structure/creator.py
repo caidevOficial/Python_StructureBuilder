@@ -22,68 +22,16 @@ from abc import ABCMeta, abstractmethod
 from Modules.Auxiliars.formatter import print_message
 
 from Modules.Auxiliars.stringbuilder import StringBuilder
+from Modules.Creators_Mod.Text.credits import Credits_Manager
 from Modules.Entities_Mod.parameter import Parameter
 from Modules.Entities_Mod.structure import Structure
+from Modules.Creators_Mod.Text.license import License_Manager
 
 
-class Creator(metaclass=ABCMeta):
-
-    _LICENSE: str = 'Docs/license.txt'
-    _CREDITS: str = 'Docs/credits.txt'
+class Creator(License_Manager, Credits_Manager, metaclass=ABCMeta):
 
     def __init__(self) -> None:
-        pass
-    
-    @property
-    def License(self) -> str:
-        """[summary]\n
-        Gets the License path.\n
-        Returns:
-            str: [The path where the License is]
-        """
-        return self._LICENSE
-    
-    @property
-    def Credits(self) -> str:
-        """[summary]\n
-        Gets the Credits path.\n
-        Returns:
-            str: [The path where the Credits is]
-        """
-        return self._CREDITS
-
-    def read_text_file(self, s_builder: StringBuilder, path: str) -> None:
-        """[summary]\n
-        Creates the Credits or License.\n
-        Args:
-            s_builder (StringBuilder): [StringBuilder to write the data of the file]
-            path (str): [Path to the file]
-        """
-        with open(path, 'r') as license_file:
-            for line in license_file:
-                s_builder.Append(line)
-            s_builder.AppendLine('\n')
-
-    def create_license_header(self, s_builder: StringBuilder) -> None:
-        """[summary]\n
-        Writes in the file a license MIT-type.\n
-        Args:
-            s_builder (StringBuilder): [StringBuilder to write the data of the file]
-        """
-        with open(self._LICENSE, 'r') as license_file:
-            for line in license_file:
-                s_builder.Append(line)
-            s_builder.AppendLine('\n')
-    
-    @abstractmethod
-    def create_imports(self, structure: Structure, s_builder: StringBuilder) -> None:
-        """[summary]\n
-        Creates the imports or 'Headers' of the file.\n
-        Args:
-            structure (Structure): [Structure for check the parameters]
-            s_builder (StringBuilder): [StringBuilder to write the data of the file]
-        """
-        pass
+        super().__init__()
 
     @abstractmethod
     def create_builder_empty(self, structure: Structure, s_builder: StringBuilder) -> None:
@@ -247,8 +195,10 @@ class Creator(metaclass=ABCMeta):
             with open(path, 'w') as file:
                 for line in s_builder:
                     print(line, file=file)
-                print(f"File {path.split('/')[-1]} was created.")
-                print(f'in Path: {path}')
+                print_message(
+                    f"File {path.split('/')[-1]} was created.",
+                    f'in Path: {path}'
+                )
                 s_builder.Clear()
                 return True
         except Exception as e:
@@ -264,9 +214,9 @@ class Creator(metaclass=ABCMeta):
         try:
             if not os.path.exists(path):
                 os.makedirs(path)
-                print(f"Directory {path} was created.")
+                print_message(f"Directory {path} was created.")
         except Exception as e:
-            print(f'Error creating Path: {e}')
+            print_message(f'Error creating Path: {e}')
             raise e
 
     @abstractmethod

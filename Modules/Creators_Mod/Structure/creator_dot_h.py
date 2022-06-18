@@ -16,13 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from Modules.Auxiliars.formatter import print_message
 from Modules.Auxiliars.stringbuilder import StringBuilder
-from Modules.Creators_Mod.creator import Creator
+from Modules.Creators_Mod.Common.common_creator import Common_Creator
+from Modules.Creators_Mod.Structure.creator import Creator
 from Modules.Entities_Mod.parameter import Parameter
 from Modules.Entities_Mod.structure import Structure
 
 
-class CreatorDotH(Creator):
+class CreatorDotH(Creator, Common_Creator):
 
     def __init__(self):
         pass
@@ -30,16 +32,24 @@ class CreatorDotH(Creator):
     def read_text_file(self, s_builder: StringBuilder, path: str) -> None:
         super().read_text_file(s_builder, path)
     
-    def create_imports(self, structure: Structure, s_builder: StringBuilder) -> None:
+    def create_top_defines(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
         Creates the imports or 'Headers' of the file.\n
         Args:
             structure (Structure): [Structure for check the parameters]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        s_builder.AppendLine(f"#ifndef {structure.Final_Structure_Name.upper()}_H_INCLUDED")
-        s_builder.AppendLine(f"#define {structure.Final_Structure_Name.upper()}_H_INCLUDED")
-        s_builder.AppendLine("#include \"LinkedList.h\"")
+        super().create_main_top_defines(structure.Final_Structure_Name, s_builder)
+        s_builder.AppendLine('#include "LinkedList.h"')
+    
+    def create_bot_defines(self, structure: Structure, s_builder: StringBuilder) -> None:
+        """[summary]\n
+        Creates the imports or 'Headers' of the file.\n
+        Args:
+            structure (Structure): [Structure for check the parameters]
+            s_builder (StringBuilder): [StringBuilder to write the data of the file]
+        """
+        super().create_main_bot_defines(structure.Final_Structure_Name, s_builder)
     
     def add_parameter_into_builder(self, structure: Structure, parameter: Parameter, s_builder: StringBuilder) -> None:
         """[summary]\n
@@ -78,7 +88,7 @@ class CreatorDotH(Creator):
             structure (Structure): [Structure for check the parameters]
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
-        self.create_imports(structure, s_builder)
+        self.create_top_defines(structure, s_builder)
         s_builder.AppendLine("\ntypedef struct{")
         for i in range(1, len(structure.Parameters)):
             parameter = structure.Parameters[i]
@@ -222,15 +232,18 @@ class CreatorDotH(Creator):
             self.create_basic_struct_functions(structure, s_builder)
             self.create_getter_and_setter(structure, s_builder)
             self.create_destructor_function(structure, s_builder)
-            s_builder.AppendLine(f"\n#endif /* {structure.Final_Structure_Name.upper()}_H_INCLUDED */")
+            self.create_bot_defines(structure, s_builder)
+            # s_builder.AppendLine(f"\n#endif /* {structure.Final_Structure_Name.upper()}_H_INCLUDED */")
 
             self.create_dir(f'{path}/{sub_path}')
             if self.create_file(f'{path}/{sub_path}/{filename}', s_builder):
-                print(f"{filename} was created.")
+                print_message(f"{filename} was created.")
             else:
-                print(f"{filename} wasn't created.")
+                print_message(f"{filename} wasn't created.")
 
         except Exception as e:
-            print(e.args)
-            print("Error in the creation of the file.")
+            print_message(
+                e.args,
+                "Error in the creation of the file."
+            )
             raise e

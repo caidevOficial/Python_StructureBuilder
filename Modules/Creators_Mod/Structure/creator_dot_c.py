@@ -16,8 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from Modules.Auxiliars.formatter import print_message
 from Modules.Auxiliars.stringbuilder import StringBuilder
-from Modules.Creators_Mod.creator import Creator
+from Modules.Creators_Mod.Structure.creator import Creator
 from Modules.Entities_Mod.parameter import Parameter
 from Modules.Entities_Mod.structure import Structure
 
@@ -46,7 +47,7 @@ class CreatorDotC(Creator):
                     return True
         return False
 
-    def create_imports(self, structure: Structure, s_builder: StringBuilder) -> None:
+    def create_top_defines(self, structure: Structure, s_builder: StringBuilder) -> None:
         s_builder.AppendLine('#include <stdlib.h>')
         s_builder.AppendLine('#include <stdio.h>')
 
@@ -411,20 +412,22 @@ class CreatorDotC(Creator):
             filename: str = f"{structure.Final_Structure_Name}.c"
 
             try:
-                self.read_text_file(s_builder, self.License)
-                self.create_imports(structure, s_builder)
-                self.read_text_file(s_builder, self.Credits)
+                self.create_license_header(s_builder)
+                self.create_top_defines(structure, s_builder)
+                self.create_credits(s_builder)
                 self.create_basic_struct_functions(structure, s_builder)
                 self.create_getter_and_setter(structure, s_builder)
                 self.create_destructor_function(structure, s_builder)
 
                 self.create_dir(f'{path}/{sub_path}')
                 if self.create_file(f'{path}/{sub_path}/{filename}', s_builder):
-                    print(f"{filename} was created.")
+                    print_message(f"{filename} was created.")
                 else:
-                    print(f"{filename} wasn't created.")
+                    print_message(f"{filename} wasn't created.")
 
             except Exception as e:
-                print(e.args)
-                print("Error in the creation of the file.")
+                print_message(
+                    e.args,
+                    "Error in the creation of the file."
+                )
                 raise e
