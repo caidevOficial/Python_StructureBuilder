@@ -506,23 +506,23 @@ int ll_DoubleSort(LinkedList *this, int (*pFunc)(void*, void*),int (*pFunc2)(voi
 /**
  * @brief  Copia una lista en la que los elementos coincidan con
  * 		   elemento pasado por parametro.
- * @param  zodiacArray
- * @param  pFunc
+ * @param  objectsArray Lista original para ser filtrada.
+ * @param  pFunc Funcion la cual se encargara de evaluar condicion para filtrar.
  * @return Retorna la lista copiada o NULL.
  * @author FacuFalcone.
  */
-LinkedList* ll_filter(LinkedList *zodiacArray, int (*pFunc)(void*)) {
+LinkedList* ll_filter(LinkedList *objectsArray, int (*pFunc)(void*)) {
 	/** llama a pFunc y le pasa un elemento, si pFunc devuelve 1, lo carga*/
 	int tam; //guardo el tamanho del array
 	void *pElement;
 	LinkedList *newLinkedList = NULL; //LL para devolver filtrado
 
-	if (zodiacArray != NULL && *pFunc != NULL) {
+	if (objectsArray != NULL && *pFunc != NULL) {
 		newLinkedList = ll_newLinkedList();
 		if (newLinkedList != NULL) {
-			tam = ll_len(zodiacArray); //guardo el tamanho de la lista original
+			tam = ll_len(objectsArray); //guardo el tamanho de la lista original
 			for (int i = 0; i < tam; i++) {
-				pElement = ll_get(zodiacArray, i); //recorro la lista original.
+				pElement = ll_get(objectsArray, i); //recorro la lista original.
 				if (pFunc(pElement)) { // si el callback devuelve 1, me copio el elemento.
 					ll_add(newLinkedList, pElement); //me los copio a la lista filtrada.
 				}
@@ -562,8 +562,8 @@ int ll_map(LinkedList* this, float (*pFunc)(void*)){
 			pElement = ll_get(this, i);
 			value = pFunc(pElement);
 			if(value != -1){
-				//! Modificar 'yourSetFunction' con el nombre del setter a usar.
-				StructureName_yourSetFunction(pElement, value);
+				//! TODO: Recuerda Modificar 'yourSetterFunction' con el nombre del setter a usar.
+				StructureName_yourSetterFunction(pElement, value);
 				ll_add(mappedList, pElement);
 			}
 		}
