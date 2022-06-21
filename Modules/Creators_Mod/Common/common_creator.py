@@ -26,6 +26,7 @@ class Common_Creator:
     _LICENSE: str = 'Docs/license.txt'
     __LL_C: str = 'Docs/LL_C.txt'
     __LL_H: str = 'Docs/LL_H.txt'
+    __FILENAME: str = ''
 
     def __init__(self):
         pass
@@ -65,6 +66,24 @@ class Common_Creator:
             str: [The path where the LL_C is]
         """
         return self.__LL_C
+
+    @property
+    def Filename(self) -> str:
+        """[summary]\n
+        Gets the Filename.\n
+        Returns:
+            str: [The name of the file]
+        """
+        return self.__FILENAME
+    
+    @Filename.setter
+    def Filename(self, value: str) -> None:
+        """[summary]\n
+        Sets the Filename.\n
+        Args:
+            value (str): [The name of the file]
+        """
+        self.__FILENAME = value
 
     def create_top_defines(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n

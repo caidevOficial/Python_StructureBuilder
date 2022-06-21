@@ -28,10 +28,11 @@ class ParserDotC(License_Manager, Credits_Manager, Common_Creator):
 
     def __init__(self):
         super().__init__()
+        self.Filename = 'Parser.c'
 
     def create_top_defines(self, structure: Structure, s_builder: StringBuilder) -> None:
         super().create_top_defines(structure, s_builder)
-        s_builder.AppendLine('#include "parser.h"')
+        s_builder.AppendLine(f'#include "{self.Filename.replace(".c", ".h")}"')
         s_builder.AppendLine(f'#include "{structure.Final_Structure_Name}.h"\n')
     
     def parser_from_bin(self, structure: Structure, s_builder: StringBuilder) -> None:
@@ -40,9 +41,9 @@ class ParserDotC(License_Manager, Credits_Manager, Common_Creator):
         s_builder.AppendLine('\tint success = 0;')
         s_builder.AppendLine('\tif(pFile != NULL){')
         s_builder.AppendLine('\t\twhile(!feof(pFile)){')
-        s_builder.AppendLine(f'\t\t\t{structure.Final_Structure_Name} = {structure.Alias}_new();')
-        s_builder.AppendLine(f'\t\t\tif(fread({structure.Final_Structure_Name}, sizeof({structure.Alias}), 1, pFile)){{')
-        s_builder.AppendLine(f'\t\t\t\tll_add(pArrayList{structure.Alias}, {structure.Final_Structure_Name});')
+        s_builder.AppendLine(f'\t\t\t{structure.Alias} = {structure.Alias}_newEmpty();')
+        s_builder.AppendLine(f'\t\t\tif(fread({structure.Alias}, sizeof({structure.Final_Structure_Name}), 1, pFile)){{')
+        s_builder.AppendLine(f'\t\t\t\tll_add(pArrayList{structure.Alias}, {structure.Alias});')
         s_builder.AppendLine('\t\t\t}')
         s_builder.AppendLine('\t\t}')
         s_builder.AppendLine('\t\tsuccess = 1;')
@@ -52,7 +53,7 @@ class ParserDotC(License_Manager, Credits_Manager, Common_Creator):
     
     def _create_params_from_structure(self, structure: Structure, s_builder: StringBuilder) -> None:
         for index in range(1, len(structure.Parameters)):
-            s_builder.AppendLine(f'\tchar aux{structure.Parameters[index].Name_Parameter}[128];')
+            s_builder.AppendLine(f'\tchar aux_{structure.Parameters[index].Name_Parameter}[128];')
         s_builder.AppendLine()
 
     def _create_regex(self, structure: Structure, s_builder: StringBuilder) -> None:
@@ -62,7 +63,7 @@ class ParserDotC(License_Manager, Credits_Manager, Common_Creator):
 
     def _create_param_part(self, structure: Structure, s_builder: StringBuilder) -> None:
         for index in range(1, len(structure.Parameters)):
-            s_builder.Append(f', aux{structure.Parameters[index].Name_Parameter}')
+            s_builder.Append(f', aux_{structure.Parameters[index].Name_Parameter}')
         s_builder.AppendLine(');')
 
     def _create_fscanf(self, structure: Structure, s_builder: StringBuilder) -> None:
@@ -89,14 +90,14 @@ class ParserDotC(License_Manager, Credits_Manager, Common_Creator):
 
         s_builder.Append('\t\t\t')
         self._create_fscanf(structure, s_builder)
-        s_builder.Append(f'\t\t\t{structure.Final_Structure_Name} = {structure.Alias}_new(')
+        s_builder.Append(f'\t\t\t{structure.Alias} = {structure.Alias}_newParam(')
         
-        for index in range(1, len(structure.Parameters)-2):
-            s_builder.Append(f'aux{structure.Parameters[index].Name_Parameter}, ')
-        s_builder.Append(f'aux{structure.Parameters[len(structure.Parameters)-1].Name_Parameter});\n')
+        for index in range(1, len(structure.Parameters)-1):
+            s_builder.Append(f'aux_{structure.Parameters[index].Name_Parameter}, ')
+        s_builder.Append(f'aux_{structure.Parameters[len(structure.Parameters)-1].Name_Parameter});\n')
 
         s_builder.AppendLine(f'\t\t\tif({structure.Final_Structure_Name} != NULL){{')
-        s_builder.AppendLine(f'\t\t\t\tll_add(pArrayList{structure.Alias}, {structure.Final_Structure_Name});')
+        s_builder.AppendLine(f'\t\t\t\tll_add(pArrayList{structure.Alias}, {structure.Alias});')
         s_builder.AppendLine('\t\t\t\tsuccess = 1;')
         s_builder.AppendLine('\t\t\t}')
         s_builder.AppendLine('\t\t}')
@@ -131,7 +132,7 @@ class ParserDotC(License_Manager, Credits_Manager, Common_Creator):
     def create_parser(self, path: str, sub_path: str, structure: Structure) -> None:
         if structure:
             s_builder = StringBuilder()
-            filename: str = "parser.c"
+            # filename: str = "parser.c"
             try:
                 self.create_license_header(s_builder)
                 self.create_top_defines(structure, s_builder)
@@ -139,10 +140,10 @@ class ParserDotC(License_Manager, Credits_Manager, Common_Creator):
                 self.parser_from_text(structure, s_builder)
                 self.parser_from_bin(structure, s_builder)
 
-                if super().create_file(f'{path}/{sub_path}/{filename}', s_builder):
-                    print_message(f"{filename} was created.")
+                if super().create_file(f'{path}/{sub_path}/{self.Filename}', s_builder):
+                    print_message(f"{self.Filename} was created.")
                 else:
-                    print_message(f"{filename} wasn't created.")
+                    print_message(f"{self.Filename} wasn't created.")
 
             except Exception as e:
                 print_message(

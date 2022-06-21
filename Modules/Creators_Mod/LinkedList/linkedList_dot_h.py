@@ -25,18 +25,19 @@ class LinkedListH(Common_Creator):
 
     def __init__(self):
         super().__init__()
+        self.Filename = 'LinkedList.h'
     
     def create_linkedlist_file(self, path: str, sub_path: str) -> None:
         try:
             s_builder = StringBuilder()
-            filename: str = "LinkedList.h"
+            # filename: str = "LinkedList.h"
             
             self.create_LL_H(s_builder)
 
-            if super().create_file(f'{path}/{sub_path}/{filename}', s_builder):
-                print_message(f"{filename} was created.")
+            if super().create_file(f'{path}/{sub_path}/{self.Filename}', s_builder):
+                print_message(f"{self.Filename} was created.")
             else:
-                print_message(f"{filename} wasn't created.")
+                print_message(f"{self.Filename} wasn't created.")
         except Exception as e:
             print_message(
                 e.args,

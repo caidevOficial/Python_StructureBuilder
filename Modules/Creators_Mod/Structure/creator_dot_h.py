@@ -224,7 +224,7 @@ class CreatorDotH(Creator, Common_Creator):
             structure (Structure): [Structure for check the data]
         """
         s_builder = StringBuilder()
-        filename: str = f"{structure.Final_Structure_Name}.h"
+        self.Filename = f"{structure.Final_Structure_Name}.h"
         try:
             self.read_text_file(s_builder, self.License)
             self.create_structure(structure, s_builder)
@@ -236,10 +236,10 @@ class CreatorDotH(Creator, Common_Creator):
             # s_builder.AppendLine(f"\n#endif /* {structure.Final_Structure_Name.upper()}_H_INCLUDED */")
 
             self.create_dir(f'{path}/{sub_path}')
-            if self.create_file(f'{path}/{sub_path}/{filename}', s_builder):
-                print_message(f"{filename} was created.")
+            if self.create_file(f'{path}/{sub_path}/{self.Filename}', s_builder):
+                print_message(f"{self.Filename} was created.")
             else:
-                print_message(f"{filename} wasn't created.")
+                print_message(f"{self.Filename} wasn't created.")
 
         except Exception as e:
             print_message(

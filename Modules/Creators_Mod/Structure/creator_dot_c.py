@@ -409,7 +409,7 @@ class CreatorDotC(Creator):
         """
         if structure:
             s_builder = StringBuilder()
-            filename: str = f"{structure.Final_Structure_Name}.c"
+            self.Filename = f"{structure.Final_Structure_Name}.c"
 
             try:
                 self.create_license_header(s_builder)
@@ -420,10 +420,10 @@ class CreatorDotC(Creator):
                 self.create_destructor_function(structure, s_builder)
 
                 self.create_dir(f'{path}/{sub_path}')
-                if self.create_file(f'{path}/{sub_path}/{filename}', s_builder):
-                    print_message(f"{filename} was created.")
+                if self.create_file(f'{path}/{sub_path}/{self.Filename}', s_builder):
+                    print_message(f"{self.Filename} was created.")
                 else:
-                    print_message(f"{filename} wasn't created.")
+                    print_message(f"{self.Filename} wasn't created.")
 
             except Exception as e:
                 print_message(
