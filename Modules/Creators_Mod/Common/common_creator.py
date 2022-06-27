@@ -84,6 +84,13 @@ class Common_Creator:
             value (str): [The name of the file]
         """
         self.__FILENAME = value
+    
+    def _create_parameters(self, structure: Structure, s_builder: StringBuilder) -> None:
+        for i in range(1, len(structure.Parameters)):
+            s_builder.Append(f'\t{structure.Parameters[i].Type_Parameter} {structure.Parameters[i].Name_Parameter}')
+            if structure.Parameters[i].Type_Parameter == 'char':
+                s_builder.Append(f'[{structure.Parameters[i].Length_Parameter}]')
+            s_builder.AppendLine(';')
 
     def create_top_defines(self, structure: Structure, s_builder: StringBuilder) -> None:
         """[summary]\n
