@@ -390,10 +390,14 @@ class CreatorDotC(Creator):
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         s_builder.AppendLine(f'// ## {structure.Final_Structure_Name}: DESTRUCTOR')
-        s_builder.Append(f'void {structure.Alias}_delete')
+        s_builder.Append(f'int {structure.Alias}_delete')
         s_builder.AppendLine(f'({structure.Final_Structure_Name}* this){{')
+        s_builder.AppendLine('\tint deleted = 0;')
         s_builder.AppendLine('\tif(this != NULL){')
-        s_builder.AppendLine('\t\tfree(this);\n\t}')
+        s_builder.AppendLine('\t\tfree(this);')
+        s_builder.AppendLine('\t\tdeleted = 1;')
+        s_builder.AppendLine('\t}')
+        s_builder.AppendLine('\treturn deleted;')
         s_builder.AppendLine('}')
 
     def file_maker(self, path: str, sub_path: str, structure: Structure) -> None:

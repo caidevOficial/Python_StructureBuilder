@@ -214,7 +214,7 @@ class CreatorDotH(Creator, Common_Creator):
             s_builder (StringBuilder): [StringBuilder to write the data of the file]
         """
         s_builder.AppendLine(f"// ## {structure.Final_Structure_Name}: DELETE")
-        s_builder.AppendLine(f"void {structure.Alias}_delete({structure.Final_Structure_Name}* this);")
+        s_builder.AppendLine(f"int {structure.Alias}_delete({structure.Final_Structure_Name}* this);")
 
     def file_maker(self, path: str, sub_path: str, structure: Structure) -> None:
         """[summary]\n
@@ -233,8 +233,7 @@ class CreatorDotH(Creator, Common_Creator):
             self.create_getter_and_setter(structure, s_builder)
             self.create_destructor_function(structure, s_builder)
             self.create_bot_defines(structure, s_builder)
-            # s_builder.AppendLine(f"\n#endif /* {structure.Final_Structure_Name.upper()}_H_INCLUDED */")
-
+            
             self.create_dir(f'{path}/{sub_path}')
             if self.create_file(f'{path}/{sub_path}/{self.Filename}', s_builder):
                 print_message(f"{self.Filename} was created.")
